@@ -1,0 +1,98 @@
+---
+swagger: "2.0"
+info:
+  version: 0.0.1
+  title: Moorise Bonus system
+host: localhost:10011
+basePath: /api/v1
+schemes:
+- http
+- https
+consumes:
+- application/json
+produces:
+- application/json
+paths:
+  /bonuses:
+    get:
+      description: List of bonus products
+      operationId: listOrders
+      parameters:
+      - name: spotId
+        in: query
+        description: bonus products spot to filter out
+        required: false
+        type: string
+      - name: number of bonuses
+        in: query
+        description: number of bonuses products
+        required: false
+        type: string
+      - name: endTime
+        in: query
+        description: End time of orders updates
+        required: false
+        type: string
+      - name: page
+        in: query
+        description: Page to iterate, 1 is default
+        required: false
+        type: number
+      responses:
+        "200":
+          description: Success
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Bonuses'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+    x-swagger-router-controller: orders
+    x-swagger-pipe: swagger_raw
+definitions:
+  Bonuses:
+    required:
+    - name
+    properties:
+      name:
+        type: string
+      geo:
+        type: string
+      coast:
+        type: string
+      HotelTypes:
+        type: array
+        description: bonus products that are available to order
+        items:
+          type: string
+  Bonusproducts:
+    required:
+    - id
+    properties:
+      id:
+        type: string
+      takeOffId:
+        type: number
+      teaType:
+        type: string
+      time:
+        type: string
+      status:
+        type: string
+        description: queue | ready | taken
+  BonusType:
+    required:
+    - id
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+  ErrorResponse:
+    required:
+    - message
+    properties:
+      message:
+        type: string
